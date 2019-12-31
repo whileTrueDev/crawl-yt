@@ -8,7 +8,6 @@ def get_youtube_streaming_data (api_key="AIzaSyDoxv6yPVLKSMJwXVF0-HKnkdl0DcgE8Ak
     from urllib.request import urlopen
     import requests, json
     import pandas as pd
-    from tqdm import tqdm_notebook
     from datetime import datetime,timedelta
     
     page_token = ""
@@ -17,6 +16,7 @@ def get_youtube_streaming_data (api_key="AIzaSyDoxv6yPVLKSMJwXVF0-HKnkdl0DcgE8Ak
         
         target_url = "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId={}&pageToken={}&maxResults=50&key={}".format(playlist_id, page_token, api_key)
         html = requests.get (target_url)
+
         soup = BeautifulSoup (html.text, "html.parser" )
         soup = eval(soup.text.replace("false","False").replace("true","True"))
     
@@ -43,7 +43,7 @@ def get_youtube_streaming_data (api_key="AIzaSyDoxv6yPVLKSMJwXVF0-HKnkdl0DcgE8Ak
     likes = [] # 좋아요 수 (비공개 가능)
     dislikes = [] # 싫어요 수  (비공개 가능)
     
-    for video_id in tqdm_notebook(live_video_id):
+    for video_id in live_video_id:
         # 방송제목, 채널이름, 태그, 카테고리 불러오기 
         target= "https://www.googleapis.com/youtube/v3/videos?part=snippet&id={}&key=AIzaSyDoxv6yPVLKSMJwXVF0-HKnkdl0DcgE8Ak".format(video_id)
         html = requests.get(target)
